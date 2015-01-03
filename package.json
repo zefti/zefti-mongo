@@ -1,0 +1,10 @@
+{
+  "name": "zefti-mongo",
+  "description": "Mongo wrapper",
+  "author": "Ryan Ogle",
+  "dependencies": {
+    "mongodb" : "latest"
+  },
+  "private": false,
+  "version": "0.0.1"
+}
