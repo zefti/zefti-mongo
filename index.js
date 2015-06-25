@@ -3,6 +3,7 @@ var MongoClient = require('mongodb').MongoClient;
 var mongoCommands = [
     'find'
   , 'findOne'
+  , 'findAndModify'
   , 'insert'
   , 'remove'
 ]
