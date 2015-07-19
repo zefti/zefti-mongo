@@ -6,6 +6,7 @@ var mongoCommands = [
   , 'findAndModify'
   , 'insert'
   , 'remove'
+  , 'update'
 ]
 
 var init = function(options){
