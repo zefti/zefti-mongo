@@ -1,34 +1,47 @@
 var MongoClient = require('mongodb').MongoClient;
+var errors = require('./lib/errors.json');
+var errorHandler = require('zefti-error-handler');
+errorHandler.addErrors(errors);
 
 var mongoCommands = [
-    'find'
+    'count'
+  , 'find'
   , 'findOne'
   , 'findAndModify'
   , 'insert'
   , 'remove'
   , 'update'
-]
+];
 
 var init = function(options){
-  var connectString = (options.username && options.password) ?
-    'mongodb://' + options.username + ':' + options.password + '@' + options.replicaSet :
-    'mongodb://' + options.replicaSet;
-  if (options.database) {
-    connectString = connectString + '/' + options.database;
+  var dataSource = options.dataSource;
+  var connectString = (dataSource.username && dataSource.password) ?
+    'mongodb://' + dataSource.username + ':' + dataSource.password + '@' + dataSource.replicaSet :
+    'mongodb://' + dataSource.replicaSet;
+  if (dataSource.database) {
+    connectString = connectString + '/' + dataSource.database;
   }
-  return mongoCommand(connectString, {}, options.collection);
-}
+  if (options.errorHandler) errorHandler.addErrors(errors);
+  return mongoCommand(connectString, {}, dataSource.collection);
+};
 
 function mongoCommand(connectString, config, collection){
   var db = null;
   var status = null;
   var mongoVirtualClient = {};
   var pendingCommands = [];
-  mongoCommands.forEach(function(command, cb){
+  mongoCommands.forEach(function(command){
     mongoVirtualClient[command] = function(){
+      var args = [].slice.call(arguments);
+      //TODO: fix the below
+      var outerCb = args.splice(args.length-1, 1)[0];
+      function errHandler(err, result){
+        if (err) return outerCb(({errCode:'56b66547b19d2b3236345648', err:err}));
+        return outerCb(null, result);
+      }
+      args.push(errHandler);
       if (db) {
-        //console.log('already db')
-        db[command].apply(db, arguments);
+        db[command].apply(db, args);
       } else if (!db && !status) {
         status = 'connecting';
         pendingCommands.push({cmd:command, args:arguments});

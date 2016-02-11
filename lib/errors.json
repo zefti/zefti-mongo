@@ -1,0 +1,29 @@
+{
+  "errorCodes": {
+    "56b66547b19d2b3236345648": {
+      "eMsg": "Error from Mongo Driver",
+      "description": "Error from Mongo Driver",
+      "sev": 2
+    },
+    "56b66547b19d2b3236345649": {
+      "eMsg": "tbd",
+      "description": "",
+      "sev": 2
+    },
+    "56b66547b19d2b323634564a": {
+      "eMsg": "tbd",
+      "description": "",
+      "sev": 2
+    },
+    "56b66547b19d2b323634564b": {
+      "eMsg": "tbd",
+      "description": "",
+      "sev": 2
+    },
+    "56b66547b19d2b323634564c": {
+      "eMsg": "tbd",
+      "description": "",
+      "sev": 2
+    }
+  }
+}
