@@ -31,6 +31,7 @@ function mongoCommand(connectString, config, collection){
   var mongoVirtualClient = {};
   var pendingCommands = [];
   mongoCommands.forEach(function(command){
+
     mongoVirtualClient[command] = function(){
       var args = [].slice.call(arguments);
       //TODO: fix the below
@@ -44,7 +45,7 @@ function mongoCommand(connectString, config, collection){
         db[command].apply(db, args);
       } else if (!db && !status) {
         status = 'connecting';
-        pendingCommands.push({cmd:command, args:arguments});
+        pendingCommands.push({cmd:command, args:args});
         MongoClient.connect(connectString, config, function(err, returnedDb) {
           if (err) throw new Error('err connecting to mongo: ' + err);
           db = returnedDb.collection(collection);
@@ -55,7 +56,7 @@ function mongoCommand(connectString, config, collection){
         });
       } else {
         //console.log('status is not ready - pushing')
-        pendingCommands.push({cmd:command, args:arguments})
+        pendingCommands.push({cmd:command, args:args})
       }
     }
   });
