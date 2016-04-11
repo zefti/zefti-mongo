@@ -10,6 +10,7 @@ var mongoCommands = [
   , 'findAndModify'
   , 'insert'
   , 'remove'
+  , 'stats'
   , 'update'
 ];
 
